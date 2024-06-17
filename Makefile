@@ -1,15 +1,30 @@
-CC = gcc
-CFLAGS = -Wall -Werror
+# Makefile
 
-all: myprogram
-myprogram: main.o utils.o
-    $(CC) $(CFLAGS) -o myprogram main.o utils.o
+CXX = g++
+CXXFLAGS = -std=c++11 -Wall
+LDFLAGS = 
 
-main.o: main.c
-    $(CC) $(CFLAGS) -c main.c
+OBJS = main.o Request.o RequestQueue.o WebServer.o LoadBalancer.o
 
-utils.o: utils.c
-    $(CC) $(CFLAGS) -c utils.c
+all: loadbalancer
+
+loadbalancer: $(OBJS)
+	$(CXX) $(CXXFLAGS) -o loadbalancer $(OBJS) $(LDFLAGS)
+
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+Request.o: Request.cpp Request.h
+	$(CXX) $(CXXFLAGS) -c Request.cpp
+
+RequestQueue.o: RequestQueue.cpp RequestQueue.h
+	$(CXX) $(CXXFLAGS) -c RequestQueue.cpp
+
+WebServer.o: WebServer.cpp WebServer.h
+	$(CXX) $(CXXFLAGS) -c WebServer.cpp
+
+LoadBalancer.o: LoadBalancer.cpp LoadBalancer.h
+	$(CXX) $(CXXFLAGS) -c LoadBalancer.cpp
 
 clean:
-    rm -f myprogram *.o
+	rm -f *.o loadbalancer
